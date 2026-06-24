@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.DS_Store
+*.log
+.deskit-port
+release/
+# 本地导出/测试产物，勿提交
+*-paste.html
+README.html
+Bn

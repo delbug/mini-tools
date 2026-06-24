@@ -1,0 +1,118 @@
+{
+  "name": "deskit",
+  "version": "1.0.0",
+  "description": "DeskKit — 本地文件与文档工具集",
+  "homepage": "https://delbug.github.io/mini-tools/",
+  "main": "electron/main.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "start": "node server.js",
+    "stop": "node scripts/stop-ports.js",
+    "restart": "npm run stop && npm run boot",
+    "boot": "npm run build && node server.js",
+    "desktop:dev": "npm run build && electron .",
+    "desktop:install": "npm install electron@^34.5.8 electron-builder@^25.1.8 --no-save",
+    "desktop:pack": "node scripts/prepare-desktop.js && npm run build && electron-builder",
+    "desktop:pack:mac": "node scripts/prepare-desktop.js && npm run build && electron-builder --mac --arm64 --x64",
+    "desktop:pack:mac:arm64": "node scripts/prepare-desktop.js && npm run build && electron-builder --mac --arm64",
+    "desktop:pack:mac:intel": "node scripts/prepare-desktop.js && npm run build && electron-builder --mac --x64",
+    "desktop:pack:win": "node scripts/prepare-desktop.js && npm run build && electron-builder --win"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.3.2",
+    "docx": "^9.7.1",
+    "element-plus": "^2.14.1",
+    "puppeteer": "^25.1.0",
+    "vue": "^3.5.35",
+    "vue-router": "^4.5.1"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.1",
+    "@vitejs/plugin-vue": "^6.0.7",
+    "sass": "^1.100.0",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.16",
+    "vue-tsc": "^3.3.3"
+  },
+  "optionalDependencies": {
+    "electron": "^34.5.8",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.delbug.deskit",
+    "productName": "DeskKit",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "electron/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": ".",
+        "to": "server",
+        "filter": [
+          "server.js",
+          "dist/**/*",
+          "server/**/*",
+          "scripts/stop-ports.js",
+          "node_modules/**/*",
+          "!node_modules/.bin/**",
+          "!node_modules/7zip-bin/**",
+          "!node_modules/electron/**",
+          "!node_modules/electron-builder/**",
+          "!node_modules/@electron/**",
+          "!node_modules/app-builder-lib/**",
+          "!node_modules/@parcel/**",
+          "!node_modules/@rolldown/**",
+          "!node_modules/lightningcss*/**",
+          "!node_modules/vite/**",
+          "!node_modules/@vitejs/**",
+          "!node_modules/vue/**",
+          "!node_modules/vue-router/**",
+          "!node_modules/vue-tsc/**",
+          "!node_modules/typescript/**",
+          "!node_modules/sass/**",
+          "!node_modules/element-plus/**",
+          "!node_modules/@element-plus/**",
+          "!node_modules/@types/**"
+        ]
+      }
+    ],
+    "asarUnpack": [
+      "**/node_modules/puppeteer/**/*"
+    ],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "artifactName": "${productName}-${version}-${arch}.${ext}",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64",
+            "x64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "arm64",
+            "x64"
+          ]
+        }
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "zip"
+      ]
+    },
+    "nsis": {
+      "oneClick": true,
+      "allowToChangeInstallationDirectory": true
+    }
+  }
+}
